@@ -108,7 +108,7 @@ export default App;
 3. create store/slices folder in src
 
 ```js
-// userSlice.ts
+// store/slices/userSlice.ts
    
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -150,7 +150,7 @@ export default userSlice.reducer;
 
 
 ```js
-// reduxHooks.ts
+// store/Hooks/reduxHooks.ts
 
 
 import { useDispatch, useSelector } from "react-redux";
