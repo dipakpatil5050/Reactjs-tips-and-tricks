@@ -155,9 +155,75 @@ export default userSlice.reducer;
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
+
+```
+
+
+================================================================================================================================
+
+
+
+# API Interceptor :
+
+
+
+```js
+import { VITE_SERVER_URL } from "@/config/env";
+import store from "@/store/store";
+import axios from "axios";
+// import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+
+export const http = axios.create({
+  baseURL: VITE_SERVER_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+export const httpFormData = axios.create();
+
+// for Request from API endpoint
+
+http.interceptors.request.use(
+  async (config) => {
+    // const token = Cookies.get("access_token");
+    const state = store.getState();
+    const { token } = state.user;
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    config.headers["Content-Type"] = "application/json";
+    // config.headers["x-api-key"] = mPin;
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// for response
+
+http.interceptors.response.use(
+  (response) => {
+    // Handle successful response here
+    return response;
+  },
+  async (error) => {
+    // Handle error response
+    if (error.response && error.response.status === 401) {
+      // Unauthorized access - maybe token expired
+      // Cookies.remove("access_token");
+      toast.error("Session expired");
+    }
+    // Alert.alert("Error", error.response?.data?.message || "An error occurred");
+
+    return Promise.reject(error);
+  }
+);
 
 
 ```
