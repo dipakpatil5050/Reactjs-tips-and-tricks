@@ -64,7 +64,7 @@ npm i @reduxjs/toolkit redux-persist react-redux
 
 Configure the Redux store and integrate **redux-persist** for persisting the state across page reloads.
 
-```ts
+```js
 // store/store.tsx
 
 import { configureStore } from "@reduxjs/toolkit";
@@ -110,7 +110,7 @@ export default store;
 
 To provide access to the Redux store in your entire application, wrap the root component with the **`Provider`** and **`PersistGate`** components.
 
-```ts
+```js
 // App.tsx
 
 import { Toaster } from "@/components/ui/toaster";
@@ -137,7 +137,7 @@ export default App;
 
 Next, we create the **slices** to manage different pieces of state. Here's an example of a **userSlice** for managing user authentication.
 
-```ts
+```js
 // store/slices/userSlice.ts
 
 import { createSlice } from "@reduxjs/toolkit";
@@ -181,7 +181,7 @@ export default userSlice.reducer;
 
 To make it easier to access the Redux store and dispatch actions, create custom hooks.
 
-```ts
+```js
 // store/Hooks/reduxHooks.ts
 
 import { useDispatch, useSelector } from "react-redux";
@@ -200,7 +200,7 @@ Interceptors allow you to modify HTTP requests and responses globally. Below is 
 
 ### **Setup Axios Interceptor**
 
-```ts
+```js
 import { VITE_SERVER_URL } from "@/config/env";
 import store from "@/store/store";
 import axios from "axios";
@@ -248,9 +248,10 @@ http.interceptors.response.use(
 );
 ```
 
-#Production grade Folder Structure :
+# Production grade Folder Structure :
 
 ```
+src -> 
 ├───api
 │   └───Auth
 ├───assets
@@ -262,8 +263,6 @@ http.interceptors.response.use(
 │   ├───dashboard
 │   ├───layouts
 │   ├───ui
-│   └───widgets
-│       └───charts
 ├───config
 ├───constant
 ├───context
@@ -281,6 +280,11 @@ http.interceptors.response.use(
 │   └───slices
 ├───types
 └───utils
+
+sample : 
+![image](https://github.com/user-attachments/assets/b04e53ed-6275-493c-8c7e-afa16204de6a)
+![image](https://github.com/user-attachments/assets/d65916ba-158e-4ed7-b7dd-01024408d985)
+
 
 ```
 
