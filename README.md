@@ -182,7 +182,6 @@ export const http = axios.create({
     "Content-Type": "application/json",
   },
 });
-export const httpFormData = axios.create();
 
 // for Request from API endpoint
 
