@@ -1,57 +1,88 @@
-# Raect Js Tips and Tricks 
+Sure! Below is the structured and formatted `README.md` file based on the content you provided. I've made it clean and organized for easy readability.
 
+---
 
-## How to access .env variables in React Frontend App
+# React JS Tips and Tricks
 
+This document provides essential tips and best practices for working with React, covering environment variables, state management using Redux Toolkit, and setting up an API interceptor.
 
-### CRA
+---
 
-.env = REACT_APP_API_URL="my sample api"
+## 1. Accessing `.env` Variables in React Frontend App
+
+### **Create React App (CRA)**
+
+For CRA, environment variables should be prefixed with `REACT_APP_` to be accessible in the React code.
+
+**Example:**
+
+**.env** file
 
 ```bash
-const baseUrl = process.env.REACT_APP_API_URL
+REACT_APP_API_URL="my_sample_api"
 ```
 
+In your React component:
 
-### Vite 
-.env = VITE_MY_API="my sample api"
+```js
+const baseUrl = process.env.REACT_APP_API_URL;
+```
+
+---
+
+### **Vite**
+
+For Vite, environment variables should be prefixed with `VITE_`.
+
+**Example:**
+
+**.env** file
 
 ```bash
-const baseUrl = import.meta.env.VITE_MY_API
-
+VITE_MY_API="my_sample_api"
 ```
 
---------------------------------------------------------------------------------------------------------------
+In your React component:
 
+```js
+const baseUrl = import.meta.env.VITE_MY_API;
+```
 
-## State Management Setup : Redux Tookit 
+---
 
+## 2. State Management Setup: **Redux Toolkit**
 
-#### Install Packages 
+State management is crucial for larger React applications. Below are the steps for setting up Redux with **Redux Toolkit** and **Redux Persist**.
+
+### **Install Required Packages**
 
 ```bash
 npm i @reduxjs/toolkit redux-persist react-redux
 ```
 
+---
 
-1. setup store with redux persistStore: 
+### **1. Setup Store with Redux Persist**
 
+Configure the Redux store and integrate **redux-persist** for persisting the state across page reloads.
 
-```js
+```ts
 // store/store.tsx
 
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/storage";  // LocalStorage as storage
 import dashboardReducer from "./slices/dashboardSlice";
 import userReducer from "./slices/userSlice";
 
+// Combine all reducers
 const rootReducer = combineReducers({
   user: userReducer,
   dashboard: dashboardReducer,
 });
 
+// Configure redux-persist
 const persistConfig = {
   key: "root",
   storage,
@@ -59,6 +90,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// Create Redux store
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -72,16 +104,15 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;
-
-
-
 ```
 
+---
 
-2.  wrap root app.js with redux Provider :
+### **2. Wrap Root `App.js` with Redux Provider**
 
+To provide access to the Redux store in your entire application, wrap the root component with the **`Provider`** and **`PersistGate`** components.
 
-```js
+```ts
 // App.tsx
 
 import { Toaster } from "@/components/ui/toaster";
@@ -90,26 +121,27 @@ import { PersistGate } from "redux-persist/integration/react";
 import AppRouter from "./routes/Routes";
 import store, { persistor } from "./store/store";
 
-
 const App = () => (
   <Provider store={store}>
     <PersistGate loading={<p>Loading...</p>} persistor={persistor}>
-              <Toaster />
-              <AppRouter />
+      <Toaster />
+      <AppRouter />
     </PersistGate>
   </Provider>
 );
 
 export default App;
-
 ```
 
+---
 
-3. create store/slices folder in src
+### **3. Create Store/Slices Folder**
 
-```js
+Next, we create the **slices** to manage different pieces of state. Here's an example of a **userSlice** for managing user authentication.
+
+```ts
 // store/slices/userSlice.ts
-   
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -134,8 +166,8 @@ const userSlice = createSlice({
     setloginFailure(state, action) {
       state.error = action.payload;
       state.loading = false;
+    },
   },
-},
 });
 
 export const {
@@ -143,37 +175,37 @@ export const {
   setloginFailure,
 } = userSlice.actions;
 export default userSlice.reducer;
- ```
+```
 
-4. create Hooks folder in store 
+---
 
+### **4. Create Custom Redux Hooks**
 
+To make it easier to access the Redux store and dispatch actions, create custom hooks.
 
-```js
+```ts
 // store/Hooks/reduxHooks.ts
-
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
+
+// Create custom hooks
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
-
 ```
 
+---
 
-================================================================================================================================
+## 3. API Interceptor Setup
 
+Interceptors allow you to modify HTTP requests and responses globally. Below is an example of setting up an API interceptor using **Axios** for handling authorization tokens and error handling.
 
+### **Setup Axios Interceptor**
 
-# API Interceptor :
-
-
-
-```js
+```ts
 import { VITE_SERVER_URL } from "@/config/env";
 import store from "@/store/store";
 import axios from "axios";
-// import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
 export const http = axios.create({
@@ -183,11 +215,9 @@ export const http = axios.create({
   },
 });
 
-// for Request from API endpoint
-
+// Request Interceptor
 http.interceptors.request.use(
   async (config) => {
-    // const token = Cookies.get("access_token");
     const state = store.getState();
     const { token } = state.user;
 
@@ -195,8 +225,7 @@ http.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     config.headers["Content-Type"] = "application/json";
-    // config.headers["x-api-key"] = mPin;
-
+    
     return config;
   },
   (error) => {
@@ -204,25 +233,33 @@ http.interceptors.request.use(
   }
 );
 
-// for response
-
+// Response Interceptor
 http.interceptors.response.use(
   (response) => {
-    // Handle successful response here
+    // Handle successful response
     return response;
   },
   async (error) => {
     // Handle error response
     if (error.response && error.response.status === 401) {
-      // Unauthorized access - maybe token expired
-      // Cookies.remove("access_token");
+      // Unauthorized access, token might be expired
       toast.error("Session expired");
     }
-    // Alert.alert("Error", error.response?.data?.message || "An error occurred");
-
     return Promise.reject(error);
   }
 );
-
-
 ```
+
+---
+
+## Conclusion
+
+This document covers some essential tips and tricks for working with React, including:
+
+1. **Accessing environment variables** in React apps.
+2. **Setting up Redux Toolkit** for state management along with **Redux Persist** for persisting state.
+3. **Setting up Axios interceptors** to manage authorization and error handling globally.
+
+By following these best practices, you can streamline your React application development, making it more maintainable, efficient, and scalable.
+
+---
