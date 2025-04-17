@@ -250,6 +250,7 @@ http.interceptors.response.use(
 
 #Production grade Folder Structure :
 
+```
 ├───api
 │   └───Auth
 ├───assets
@@ -281,7 +282,7 @@ http.interceptors.response.use(
 ├───types
 └───utils
 
-
+```
 
 
 ---
