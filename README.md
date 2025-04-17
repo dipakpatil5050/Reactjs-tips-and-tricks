@@ -27,6 +27,13 @@ const baseUrl = import.meta.env.VITE_MY_API
 ## State Management Setup : Redux Tookit 
 
 
+#### Install Packages 
+
+```bash
+npm i @reduxjs/toolkit redux-persist react-redux
+```
+
+
 !. setup store with redux persistStore: 
 
 
