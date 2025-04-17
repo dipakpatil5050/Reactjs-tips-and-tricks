@@ -36,8 +36,10 @@ npm i @reduxjs/toolkit redux-persist react-redux
 
 1. setup store with redux persistStore: 
 
-store.tsx
+
 ```js
+// store/store.tsx
+
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
@@ -78,8 +80,9 @@ export default store;
 
 2.  wrap root app.js with redux Provider :
 
-App.tsx
+
 ```js
+// App.tsx
 
 import { Toaster } from "@/components/ui/toaster";
 import { Provider } from "react-redux";
@@ -104,8 +107,8 @@ export default App;
 
 3. create store/slices folder in src
 
-userSlice.ts
-   ```js
+```js
+// userSlice.ts
    
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -140,13 +143,15 @@ export const {
   setloginFailure,
 } = userSlice.actions;
 export default userSlice.reducer;
-   ```
+ ```
 
 4. create Hooks folder in store 
 
-reduxHooks.ts
+
 
 ```js
+// reduxHooks.ts
+
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
