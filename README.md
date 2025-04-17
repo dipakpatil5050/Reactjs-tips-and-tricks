@@ -248,6 +248,42 @@ http.interceptors.response.use(
 );
 ```
 
+#Production grade Folder Structure :
+
+├───api
+│   └───Auth
+├───assets
+│   ├───Icons
+│   │   └───favicon
+│   └───images
+│       └───logo
+├───components
+│   ├───dashboard
+│   ├───layouts
+│   ├───ui
+│   └───widgets
+│       └───charts
+├───config
+├───constant
+├───context
+├───hooks
+├───lib
+├───pages
+│   ├───dashboard
+│   └───User
+├───routes
+│   ├───hooks
+│   └───modules
+├───services
+├───store
+│   ├───hooks
+│   └───slices
+├───types
+└───utils
+
+
+
+
 ---
 
 ## Conclusion
