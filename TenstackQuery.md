@@ -1,10 +1,14 @@
 
-## Tenstack Query : Server side state Management 
+# Tenstack Query : Server side state Management 
+
+## Installation :
+
+```bash
+npm install @tanstack/react-query
+```
 
 
-
-
-# Query
+## Query
 ### Fetch get API Data 
 ```js
 import { useQuery } from 'react-query';
