@@ -5,7 +5,7 @@
 
 
 # Query
-### Fetch Get API Date 
+### Fetch get API Data 
 ```js
 import { useQuery } from 'react-query';
 
