@@ -4,6 +4,19 @@
 
 
 
+# Query
+### Fetch Get API Date 
+```js
+import { useQuery } from 'react-query';
+
+const { data, isLoading, isError } = useQuery('todos', async () => {
+  const response = await fetch('/api/todos');
+  const data = await response.json();
+  return data;
+});
+
+```
+
 
 
 ## useMutation 
@@ -22,4 +35,24 @@ const { mutate, isLoading, isError } = useMutation(async (text) => {
   return data;
 });
 
+```
+
+
+
+## Root provider 
+
+`
+```js
+
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {/* Your app code here */}
+    </QueryClientProvider>
+  );
+}
 ```
