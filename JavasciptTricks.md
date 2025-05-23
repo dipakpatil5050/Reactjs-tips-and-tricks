@@ -1,3 +1,4 @@
+# Js Syntax Shortcuts and Essentials
 
 ### 1. Ternary Operator
 
